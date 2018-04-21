@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+
 
 namespace Calculations
 {
@@ -8,7 +10,8 @@ namespace Calculations
     {
         int calculationResult;
         string[] delimeters;
-        string[] parameters;
+        List<string> parameters;
+        List<int> valuesToAdd;
         string errorMessage;
 
 
@@ -16,15 +19,22 @@ namespace Calculations
         {
             calculationResult = 0;
             delimeters = new string[] { "," };
+            parameters = new List<string>();
+            valuesToAdd = new List<int>();
         }
 
+        /// <summary>
+        /// Display the current calculator result
+        /// </summary>
         public void DisplayResult()
         {
+            //If there is no error message, display the result
             if(String.IsNullOrEmpty(errorMessage))
             {
                 string result = calculationResult.ToString();
                 Console.WriteLine(result);
             }
+            //Otherwise, display the error message
             else
             {
                 Console.WriteLine(errorMessage);
@@ -32,58 +42,90 @@ namespace Calculations
         }
 
         /// <summary>
-        /// Add 0 numbers
+        /// Add all of the numbers in the delimited string
         /// </summary>
         public int Add(string numbers)
         {
+            //reset the calculator variables
             Reset();
-            parameters = GetParameters(numbers);
-
-            calculationResult = ProcessAdd(parameters);
-
+            //calculate the result of the parameters
+            ProcessAdd(numbers);
+            //return the final result
             return calculationResult;
         }
 
-        private int ProcessAdd(string[] parameters)
+        /// <summary>
+        /// Process the parameters and calculate the add value
+        /// </summary>
+        private void ProcessAdd(string parameterString)
         {
-            string resultString1;
-            string resultString2;
-            int result1;
-            int result2;
+            ConvertParametersToList(parameterString);
+            
+            ConvertParametersToInt();
 
-            if (parameters.Length == 0)
-                return 0;
-            else if (parameters.Length == 1)
+            //If there is no error message, calculate the final result
+            if(String.IsNullOrEmpty(errorMessage))
             {
-                resultString1 = parameters[0];
-                result1 = Convert.ToInt32(resultString1);
-                return result1;
-            }
-            else if (parameters.Length == 2)
-            {
-                resultString1 = parameters[0];
-                resultString2 = parameters[1];
-                result1 = Convert.ToInt32(resultString1);
-                result2 = Convert.ToInt32(resultString2);
-
-                return result1 + result2;
-            }
-            else
-            {
-                errorMessage = "More than 2 Parameters";
-                return 0;
+                CalculateFinalAddResult();
             }
         }
 
-        private string[] GetParameters(string parametersString)
+        /// <summary>
+        /// Converts the list of string parameters to a list of integers
+        /// </summary>
+        private void ConvertParametersToInt()
         {
-            string[] parameterArray = parametersString.Split(delimeters, 3, StringSplitOptions.RemoveEmptyEntries);
-            return parameterArray;
+            foreach (string parameter in parameters)
+            {
+                try
+                {
+                    int currentParameter = Convert.ToInt32(parameter);
+                    valuesToAdd.Add(currentParameter);
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = "Improperly formatted string";
+                    break;
+                }
+            }
         }
 
+        /// <summary>
+        /// Calculates the final Add result into the calculationResult member
+        /// </summary>
+        private void CalculateFinalAddResult()
+        {
+            int result = 0;
+            foreach (int value in valuesToAdd)
+            {
+                result += value;
+            }
+            calculationResult = result;
+        }
+
+        /// <summary>
+        /// Converts parameter string into a List of strings
+        /// </summary>
+        /// <param name="parametersString"></param>
+        private void ConvertParametersToList(string parametersString)
+        {
+            string[] parameterArray = parametersString.Split(delimeters, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach(string parameter in parameterArray)
+            {
+                parameters.Add(parameter);
+            }
+        }
+
+        /// <summary>
+        /// Reset the Calculator
+        /// </summary>
         public void Reset()
         {
             calculationResult = 0;
+            parameters = new List<string>();
+            valuesToAdd = new List<int>();
+            errorMessage = string.Empty;
         }
     }
 }
