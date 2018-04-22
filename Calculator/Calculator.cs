@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Text.RegularExpressions;
 
 namespace Calculations
 {
@@ -18,7 +18,7 @@ namespace Calculations
         public Calculator()
         {
             calculationResult = 0;
-            delimeters = new string[] { "," };
+            delimeters = new string[] { ",", "\n" };
             parameters = new List<string>();
             valuesToAdd = new List<int>();
         }
