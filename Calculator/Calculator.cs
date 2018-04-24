@@ -9,27 +9,20 @@ namespace Calculations
     public class Calculator
     {
         int calculationResult;
-        string[] delimeters;
-        List<string> parameters;
-        List<int> valuesToAdd;
-        string errorMessage;
-
+        ParamProcessor ParamProcessor = new ParamProcessor();
 
         public Calculator()
         {
             calculationResult = 0;
-            delimeters = new string[] { ",", "\n" };
-            parameters = new List<string>();
-            valuesToAdd = new List<int>();
         }
 
         /// <summary>
         /// Display the current calculator result
         /// </summary>
-        public void DisplayResult()
+        private void DisplayResult()
         {
-            //If there is no error message, display the result
-            if(String.IsNullOrEmpty(errorMessage))
+            //If there is no error, display the result
+            if(ParamProcessor.Result.FinalResult != ParamResult.Error)
             {
                 string result = calculationResult.ToString();
                 Console.WriteLine(result);
@@ -37,95 +30,55 @@ namespace Calculations
             //Otherwise, display the error message
             else
             {
-                Console.WriteLine(errorMessage);
+                Result result = ParamProcessor.Result;
+                Console.WriteLine(result.Message);
             }
         }
-
         /// <summary>
-        /// Add all of the numbers in the delimited string
+        /// Add all of the numbers in a Delimited String and pass it to the Console.
         /// </summary>
-        public int Add(string numbers)
+        /// <param name="parameters"></param>
+        public void AddNumbers(string parameters)
         {
-            //reset the calculator variables
-            Reset();
-            //calculate the result of the parameters
-            ProcessAdd(numbers);
-            //return the final result
-            return calculationResult;
+            calculationResult = Add(parameters);
+            DisplayResult();
         }
-
         /// <summary>
-        /// Process the parameters and calculate the add value
+        /// The method required for this exercise
         /// </summary>
-        private void ProcessAdd(string parameterString)
+        private int Add(string parameters)
         {
-            ConvertParametersToList(parameterString);
-            
-            ConvertParametersToInt();
+            ResetCalculator();
+
+            ParamProcessor.ProcessInput(parameters);
 
             //If there is no error message, calculate the final result
-            if(String.IsNullOrEmpty(errorMessage))
-            {
-                CalculateFinalAddResult();
-            }
+            if (ParamProcessor.Result.FinalResult != ParamResult.Error)
+                return CalculateFinalAddResult();
+            else
+                return 0;
         }
 
-        /// <summary>
-        /// Converts the list of string parameters to a list of integers
-        /// </summary>
-        private void ConvertParametersToInt()
-        {
-            foreach (string parameter in parameters)
-            {
-                try
-                {
-                    int currentParameter = Convert.ToInt32(parameter);
-                    valuesToAdd.Add(currentParameter);
-                }
-                catch (Exception ex)
-                {
-                    errorMessage = "Improperly formatted string";
-                    break;
-                }
-            }
-        }
 
         /// <summary>
         /// Calculates the final Add result into the calculationResult member
         /// </summary>
-        private void CalculateFinalAddResult()
+        private int CalculateFinalAddResult()
         {
             int result = 0;
-            foreach (int value in valuesToAdd)
+            foreach (int value in ParamProcessor.Result.Numbers)
             {
                 result += value;
             }
-            calculationResult = result;
-        }
-
-        /// <summary>
-        /// Converts parameter string into a List of strings
-        /// </summary>
-        /// <param name="parametersString"></param>
-        private void ConvertParametersToList(string parametersString)
-        {
-            string[] parameterArray = parametersString.Split(delimeters, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach(string parameter in parameterArray)
-            {
-                parameters.Add(parameter);
-            }
+            return result;
         }
 
         /// <summary>
         /// Reset the Calculator
         /// </summary>
-        public void Reset()
+        private void ResetCalculator()
         {
             calculationResult = 0;
-            parameters = new List<string>();
-            valuesToAdd = new List<int>();
-            errorMessage = string.Empty;
         }
     }
 }

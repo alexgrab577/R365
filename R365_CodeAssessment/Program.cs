@@ -13,27 +13,26 @@ namespace R365_CodeAssessment
             Calculator calc = new Calculator();
             /*
             //Step 1
-            calc.Add("");
-            calc.DisplayResult();
-            calc.Add("1");
-            calc.DisplayResult();
-            calc.Add("1,2");
-            calc.DisplayResult();
+            calc.AddNumbers("");
+            calc.AddNumbers("1");
+            calc.AddNumbers("1,2");
 
             //Step 2
-            calc.Add("1,2,3,4,5,50");
-            calc.DisplayResult();*/
+            calc.AddNumbers("1,2,3,4,5,50");
 
             //Step 3
-            calc.Add("1\n2,3");
-            calc.DisplayResult();
-            calc.Add("1,\n");
-            calc.DisplayResult();
+            calc.AddNumbers("1\n2,3");
+            calc.AddNumbers("1,\n");
+            */
+
+            //Step 4
+            calc.AddNumbers(";\n1;2;3;4;5");
+            calc.AddNumbers("\n1,2,3,4,5");
+            calc.AddNumbers("1,2,3,4,5");
 
             /*
             //Error Handling
-            calc.Add("1,2^");
-            calc.DisplayResult();
+            calc.AddNumbers("1,2^");
             */
         }
     }
