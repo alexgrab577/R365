@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+
 
 namespace Calculations
 {
@@ -111,7 +113,11 @@ namespace Calculations
         //Needs work, compare to delimeters in Calculator Object
         private void UpdateDelimeterArray()
         {
-            delimeters.Add(DelimeterString);
+            if(!String.IsNullOrEmpty(DelimeterString))
+            {
+                delimeters.Add(DelimeterString);
+            }
+
             DelimeterArray = delimeters.ToArray();
         }
 
@@ -133,13 +139,56 @@ namespace Calculations
         /// </summary>
         private void ConvertParametersToInt()
         {
-            List<int> valuesToAdd = new List<int>();
+            List<int> resultList = new List<int>();
+
+            resultList = GetParametersAsInt();
+
+            CheckNegativeNumbers(resultList);
+
+            if (Result.FinalResult != ParamResult.Error)
+            {
+                Result.Numbers = resultList;
+            }
+        }
+
+        private void CheckNegativeNumbers(List<int> numbers)
+        {
+            StringBuilder negativeNumberList = new StringBuilder();
+            string exceptionString;
+            try
+            {
+                var negativeValuesFound = numbers.Where(x => x < 0);
+
+                if (negativeValuesFound.Count() > 0)
+                {
+                    foreach (var value in negativeValuesFound)
+                    {
+                        negativeNumberList.Append(value.ToString());
+                    }
+
+                    exceptionString = "Negative numbers not allowed: " + negativeNumberList.ToString();
+
+                    throw new Exception(exceptionString);
+                }
+            }
+            catch (Exception ex)
+            {
+                Result.FinalResult = ParamResult.Error;
+                Result.Message = ex.Message;
+            }
+
+        }
+
+        private List<int> GetParametersAsInt()
+        {
+            List<int> returnList = new List<int>();
+
             foreach (string parameter in parameters)
             {
                 try
                 {
                     int currentParameter = Convert.ToInt32(parameter);
-                    valuesToAdd.Add(currentParameter);
+                    returnList.Add(currentParameter);
                 }
                 catch (Exception ex)
                 {
@@ -148,10 +197,7 @@ namespace Calculations
                     break;
                 }
             }
-            if(Result.FinalResult != ParamResult.Error)
-            {
-                Result.Numbers = valuesToAdd;
-            }
+            return returnList;
         }
     }
 }

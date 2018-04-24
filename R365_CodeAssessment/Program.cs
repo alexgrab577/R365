@@ -23,13 +23,17 @@ namespace R365_CodeAssessment
             //Step 3
             calc.AddNumbers("1\n2,3");
             calc.AddNumbers("1,\n");
-            */
+
 
             //Step 4
             calc.AddNumbers(";\n1;2;3;4;5");
             calc.AddNumbers("\n1,2,3,4,5");
             calc.AddNumbers("1,2,3,4,5");
+            */
 
+            //Step 5
+            calc.AddNumbers("-1,2,3,4, 5");
+            calc.AddNumbers("-1,-2,-3,4, 5");
             /*
             //Error Handling
             calc.AddNumbers("1,2^");
