@@ -34,11 +34,20 @@ namespace R365_CodeAssessment
             //Step 5
             calc.AddNumbers("-1,2,3,4, 5");
             calc.AddNumbers("-1,-2,-3,4, 5");
-            */
+
 
             //Step 6
             calc.AddNumbers("1,2,3,4,5,1000,100000000,6");
+            */
+
+            //Step 7 and 8 and 9
+            calc.AddNumbers("[***][*][&&]\n1***2");
+
             /*
+            //Testing Parameters Without Brackets
+            calc.AddNumbers("*;\n1;2;3;4;5");
+
+
             //Error Handling
             calc.AddNumbers("1,2^");
             */

@@ -45,13 +45,16 @@ namespace Calculations
 
             UpdateResult();
 
-            UpdateDelimeterArray();
+            FormatDelimeterArray();
 
             ConvertParametersToList();
 
             ConvertParametersToInt();
         }
 
+        /// <summary>
+        /// Reset the ProcessParameters Object for the next call
+        /// </summary>
         public void ResetProcessParam()
         {
             parameters = new List<string>();
@@ -62,6 +65,10 @@ namespace Calculations
             DelimeterArray = delimeters.ToArray();
         }
 
+        /// <summary>
+        /// Perform the split to capture the parameters and the delimeters
+        /// </summary>
+        /// <param name="ParameterInput"></param>
         private void SplitDelimetersFromParams(string ParameterInput)
         {
             if (ParameterInput.Contains(splitter))
@@ -82,6 +89,9 @@ namespace Calculations
                 ParameterString = ParameterInput;
         }
 
+        /// <summary>
+        /// Updates the Result Object
+        /// </summary>
         private void UpdateResult()
         {
             bool delimetersFound = false;
@@ -110,14 +120,20 @@ namespace Calculations
             }
         }
 
-        //Needs work, compare to delimeters in Calculator Object
-        private void UpdateDelimeterArray()
+        //Convert the Delimeter List to the Delimeter Array
+        private void FormatDelimeterArray()
         {
             if(!String.IsNullOrEmpty(DelimeterString))
             {
-                delimeters.Add(DelimeterString);
-            }
+                string[] delimeterParser = new string[] { "[", "]" };
 
+                string[] delimeterParsedResult = DelimeterString.Split(delimeterParser, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string delimeter in delimeterParsedResult)
+                {
+                    delimeters.Add(delimeter);
+                }
+            }
             DelimeterArray = delimeters.ToArray();
         }
 
