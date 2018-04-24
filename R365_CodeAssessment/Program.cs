@@ -29,11 +29,15 @@ namespace R365_CodeAssessment
             calc.AddNumbers(";\n1;2;3;4;5");
             calc.AddNumbers("\n1,2,3,4,5");
             calc.AddNumbers("1,2,3,4,5");
-            */
+
 
             //Step 5
             calc.AddNumbers("-1,2,3,4, 5");
             calc.AddNumbers("-1,-2,-3,4, 5");
+            */
+
+            //Step 6
+            calc.AddNumbers("1,2,3,4,5,1000,100000000,6");
             /*
             //Error Handling
             calc.AddNumbers("1,2^");

@@ -143,7 +143,11 @@ namespace Calculations
 
             resultList = GetParametersAsInt();
 
+            //Throw an Exception if any negative Numbers Appear
             CheckNegativeNumbers(resultList);
+
+            //Remove any Numbers that are more than 1000
+            resultList.RemoveAll(x => x >= 1000);
 
             if (Result.FinalResult != ParamResult.Error)
             {
